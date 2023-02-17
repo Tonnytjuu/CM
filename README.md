@@ -3,3 +3,5 @@ My corpus of songs contains my personal music playlist i listen to when I go to 
 The playlist mainly consists of metal songs and rapsongs. I personally think metal and rap are common genres in a 'workout' playlist, along side house and dubstep. 
 
 As this is just a corpus of ~50 songs I do not think these songs represent the genre well enough, as artists such as Deftones and Eminem are very mainstream in their genre. Furthermore, due to the small size of songs in this corpus, I do think one should take the conclusions drawn from this analysis with a grain of salt, and are for personal amusement only. I have split this playlist into the the genres: House, metal and hiphop/rap to see what these songs have in common.
+
+Looking at the plot, we can see in the scatterplot that almost every song in my corpus has a high energy value. This is to be expected, as you will not listen to 'low energy' songs in the gym.
