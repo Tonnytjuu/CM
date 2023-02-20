@@ -1,3 +1,9 @@
+---
+title: "Portfolio CM"
+author: "Tonny Le"
+output: html_document
+---
+
 My corpus of songs contains my personal music playlist i listen to when I go to the gym. This is a playlist of songs that will make me lift more, unlike some other music I have listened to. For some reason I cannot get enough of the songs when I am working out but I scarcely listen to these songs when I am for example at home sitting on the couch. What makes these songs so good in the gym compared to other songs?
 
 The playlist mainly consists of metal songs and rapsongs. I personally think metal and rap are common genres in a 'workout' playlist, along side house and dubstep. 
@@ -6,36 +12,4 @@ As this is just a corpus of ~50 songs I do not think these songs represent the g
 
 Looking at the plot, we can see in the scatterplot that almost every song in my corpus has a high energy value. This is to be expected, as you will not listen to 'low energy' songs in the gym.
 
-```{r}
-library(tidyverse)
-library(spotifyr)
-library(ggplot2)
-
-cm <- get_playlist_audio_features("", "0Exrs3zznekmCiCjhGZ3X9")
-cm1 <- get_playlist_audio_features("", "2tO0uLN5SxReQo533Ekoo4")
-cm2 <- get_playlist_audio_features("", "5aGC1K6IyQkXicMaaIA82Y")
-cm3 <- get_playlist_audio_features("", "5CMf4RYXFouuTKqI6RZ8iY")
-
-data1 <- data.frame(
-  x=cm1 %>% select('valence'),
-  y=cm1 %>% select('energy')
-)
-
-data2 <- data.frame(
-  x=cm2 %>% select('valence'),
-  y=cm2 %>% select('energy')
-)
-
-data3 <- data.frame(
-  x=cm3 %>% select('valence'),
-  y=cm3 %>% select('energy')
-)
-
-plot <- ggplot() + geom_point(data1, mapping=aes(valence, energy, color='red')) +
-  geom_point(data2, mapping=aes(valence, energy, color='blue')) +
-  geom_point(data3, mapping=aes(valence, energy, color='green')) + 
-  ggtitle("Valence and energy of the songs in my corpus")
-
-plot + scale_color_hue(labels = c("Rap", "Metal", "House/Rest")) + theme(legend.title=element_blank())
-```
-
+![plots energy](plot_energy_corpus.png)
