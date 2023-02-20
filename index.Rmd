@@ -1,19 +1,41 @@
----
-title: "R Notebook"
-output: html_notebook
----
+My corpus of songs contains my personal music playlist i listen to when I go to the gym. This is a playlist of songs that will make me lift more, unlike some other music I have listened to. For some reason I cannot get enough of the songs when I am working out but I scarcely listen to these songs when I am for example at home sitting on the couch. What makes these songs so good in the gym compared to other songs?
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+The playlist mainly consists of metal songs and rapsongs. I personally think metal and rap are common genres in a 'workout' playlist, along side house and dubstep. 
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+As this is just a corpus of ~50 songs I do not think these songs represent the genre well enough, as artists such as Deftones and Eminem are very mainstream in their genre. Furthermore, due to the small size of songs in this corpus, I do think one should take the conclusions drawn from this analysis with a grain of salt, and are for personal amusement only. I have split this playlist into the the genres: House, metal and hiphop/rap to see what these songs have in common.
+
+Looking at the plot, we can see in the scatterplot that almost every song in my corpus has a high energy value. This is to be expected, as you will not listen to 'low energy' songs in the gym.
 
 ```{r}
-plot(cars)
+library(tidyverse)
+library(spotifyr)
+library(ggplot2)
+
+cm <- get_playlist_audio_features("", "0Exrs3zznekmCiCjhGZ3X9")
+cm1 <- get_playlist_audio_features("", "2tO0uLN5SxReQo533Ekoo4")
+cm2 <- get_playlist_audio_features("", "5aGC1K6IyQkXicMaaIA82Y")
+cm3 <- get_playlist_audio_features("", "5CMf4RYXFouuTKqI6RZ8iY")
+
+data1 <- data.frame(
+  x=cm1 %>% select('valence'),
+  y=cm1 %>% select('energy')
+)
+
+data2 <- data.frame(
+  x=cm2 %>% select('valence'),
+  y=cm2 %>% select('energy')
+)
+
+data3 <- data.frame(
+  x=cm3 %>% select('valence'),
+  y=cm3 %>% select('energy')
+)
+
+plot <- ggplot() + geom_point(data1, mapping=aes(valence, energy, color='red')) +
+  geom_point(data2, mapping=aes(valence, energy, color='blue')) +
+  geom_point(data3, mapping=aes(valence, energy, color='green')) + 
+  ggtitle("Valence and energy of the songs in my corpus")
+
+plot + scale_color_hue(labels = c("Rap", "Metal", "House/Rest")) + theme(legend.title=element_blank())
 ```
-
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
-
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
-
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
