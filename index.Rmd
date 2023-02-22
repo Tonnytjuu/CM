@@ -1,8 +1,17 @@
 ---
 title: "Portfolio CM"
-author: "Tonny Le"
-output: html_document
+output: 
+  flexdashboard::flex_dashboard:
+    storyboard: true
 ---
+
+Home
+===================================== 
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Overview
 
 My corpus of songs contains my personal music playlist i listen to when I go to the gym. This is a playlist of songs that will make me lift more, unlike some other music I have listened to. For some reason I cannot get enough of the songs when I am working out but I scarcely listen to these songs when I am for example at home sitting on the couch. What makes these songs so good in the gym compared to other songs?
 
@@ -10,6 +19,155 @@ The playlist mainly consists of metal songs and rapsongs. I personally think met
 
 As this is just a corpus of ~50 songs I do not think these songs represent the genre well enough, as artists such as Deftones and Eminem are very mainstream in their genre. Furthermore, due to the small size of songs in this corpus, I do think one should take the conclusions drawn from this analysis with a grain of salt, and are for personal amusement only. I have split this playlist into the the genres: House, metal and hiphop/rap to see what these songs have in common.
 
-Looking at the plot, we can see in the scatterplot that almost every song in my corpus has a high energy value. This is to be expected, as you will not listen to 'low energy' songs in the gym.
+Looking at the upperplot, we can see almost every song in my corpus has a high energy value. This is to be expected, as you will not listen to 'low energy' songs in the gym. In the second plot we can see the tempo over the danceability, where we can clearly see that the songs in the corpus has mostly songs with a high beats per minute (BPM). This is obviously correlated with the high energy the songs has, what was also clearly seen in the plot above. Lastly, the songs tend to be loud, with metal being a clear example.
 
-![plots energy](plot_energy_corpus.png)
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+
+### Energy over valence
+```{r}
+library(tidyverse)
+library(spotifyr)
+library(ggplot2)
+library(flexdashboard)
+library(readr)
+library(lubridate)
+library(plotly)
+
+cm <- get_playlist_audio_features("", "0Exrs3zznekmCiCjhGZ3X9")
+cm1 <- get_playlist_audio_features("", "2tO0uLN5SxReQo533Ekoo4")
+cm2 <- get_playlist_audio_features("", "5aGC1K6IyQkXicMaaIA82Y")
+cm3 <- get_playlist_audio_features("", "5CMf4RYXFouuTKqI6RZ8iY")
+
+fig <- plot_ly()
+fig <- fig %>%
+  add_trace(
+    data=cm1,
+    x=~valence,
+    y=~energy,
+    type = "scatter",
+    hoverinfo='text',
+    mode = "markers",
+    name='Rap',
+    marker = list(color='green'),
+    text= paste(
+                cm1$track.name,
+                "<br>",
+                "Valence: ", cm1$valence,
+                "<br>",
+                "Energy: ", cm1$energy
+    )
+)
+
+fig <- fig %>%
+  add_trace(
+    data=cm2,
+    x=~valence,
+    y=~energy,
+    type = "scatter",
+    hoverinfo='text',
+    mode = "markers",
+    name='Metal',
+    marker = list(color='red'),
+    text= paste(
+      cm2$track.name,
+      "<br>",
+      "Valence: ", cm2$valence,
+      "<br>",
+      "Energy: ", cm2$energy
+    )
+)
+
+fig <- fig %>%
+  add_trace(
+    data=cm3,
+    x=~valence,
+    y=~energy,
+    type = "scatter",
+    hoverinfo='text',
+    mode = "markers",
+    marker = list(color='blue'),
+    name='House/rest',
+    text= paste(
+      cm3$track.name,
+      "<br>",
+      "Valence: ", cm3$valence,
+      "<br>",
+      "Energy: ", cm3$energy
+    )
+  )
+
+fig
+```
+### Tempo over the danceability, scaling with the loudness of the song
+```{r}
+fig2 <- plot_ly()
+fig2 <- fig2 %>%
+  add_trace(
+    data=cm1,
+    x=~danceability,
+    y=~tempo,
+    type = "scatter",
+    hoverinfo='text',
+    mode = "markers",
+    size=~loudness,
+    name='Rap',
+    marker = list(color='green'),
+    text= paste(
+      cm1$track.name,
+      "<br>",
+      "Danceability: ", cm1$danceability,
+      "<br>",
+      "Tempo: ", cm1$tempo,
+      "<br>",
+      "Loudness: ", cm1$loudness
+    )
+  )
+
+fig2 <- fig2 %>%
+  add_trace(
+    data=cm2,
+    x=~danceability,
+    y=~tempo,
+    type = "scatter",
+    hoverinfo='text',
+    mode = "markers",
+    size=~loudness,
+    name='Metal',
+    marker = list(color='red'),
+    text= paste(
+      cm2$track.name,
+      "<br>",
+      "Danceability: ", cm2$danceability,
+      "<br>",
+      "Tempo: ", cm2$tempo,
+      "<br>",
+      "Loudness: ", cm2$loudness
+    )
+  )
+
+fig2 <- fig2 %>%
+  add_trace(
+    data=cm3,
+    x=~danceability,
+    y=~tempo,
+    type = "scatter",
+    hoverinfo='text',
+    mode = "markers",
+    size=~loudness,
+    name='House/rest',
+    marker = list(color='blue'),
+    text= paste(
+      cm3$track.name,
+      "<br>",
+      "Danceability: ", cm3$danceability,
+      "<br>",
+      "Tempo: ", cm3$tempo,
+      "<br>",
+      "Loudness: ", cm3$loudness
+    )
+  )
+
+fig2
+```
