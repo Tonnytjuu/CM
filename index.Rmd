@@ -1,5 +1,5 @@
 ---
-title: "Portfolio Tonny Le"
+title: "The similarity of gym music"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
@@ -11,9 +11,19 @@ Home
 Column {data-width=500}
 -----------------------------------------------------------------------
 
-### Overview
+<style type="text/css">
 
-My corpus of songs contains my personal music playlist i listen to when I go to the gym. This is a playlist of songs that will make me lift more, unlike some other music I have listened to. For some reason I cannot get enough of the songs when I am working out but I scarcely listen to these songs when I am for example at home sitting on the couch. What makes these songs so good in the gym compared to other songs?
+.overview {
+   font-size: 15px;
+   font-family: Algerian;
+
+</style>
+
+### Overview {.overview}
+
+<a href="https://open.spotify.com/playlist/6sCXB5zUhjzbpXnLYOMdi1?si=e8abc3f35f9844df">Link to my corpus (spotify)</a>
+
+My corpus of songs contains my personal music playlist I listen to when I go to the gym. This is a playlist of songs that will make me lift more, unlike some other music I have listened to. For some reason I cannot get enough of the songs when I am working out but I scarcely listen to these songs when I am for example at home sitting on the couch. What makes these songs so good in the gym compared to other songs?
 
 The playlist mainly consists of metal songs and rapsongs. I personally think metal and rap are common genres in a 'workout' playlist, along side house and dubstep. 
 
@@ -21,9 +31,13 @@ As this is just a corpus of ~50 songs I do not think these songs represent the g
 
 Looking at the upperplot, we can see almost every song in my corpus has a high energy value. This is to be expected, as you will not listen to 'low energy' songs in the gym. In the second plot we can see the tempo over the danceability, where we can clearly see that the songs in the corpus has mostly songs with a high beats per minute (BPM). This is obviously correlated with the high energy the songs has, what was also clearly seen in the plot above. Lastly, the songs tend to be loud, with metal being a clear example.
 
-Column {data-width=350}
------------------------------------------------------------------------
+<h2>Outliers</h2>
 
+The outliers, (low energy, low valence) are all from the artist Kuoga. This is trap/house music. Logically speaking, this is low valence. What makes up for the low energy (according to spotify) is the drop fitting for cardio and lifting. Other outliers are the songs of Gojira, heavy metal. These songs have almost the maximum value of energy and the tempo is around 150 BPM, pretty self explanatory. One funny outlier is Awaken, low tempo and low danceability. This song has in my opinion a good chorus to make up for it.
+
+
+Column {.tabset}
+-----------------------------------------------------------------------
 
 ### Energy over valence
 ```{r}
