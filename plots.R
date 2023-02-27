@@ -1,10 +1,10 @@
 library(tidyverse)
 library(spotifyr)
 library(ggplot2)
-library(flexdashboard)
 library(readr)
 library(lubridate)
 library(plotly)
+library(compmus)
 
 cm <- get_playlist_audio_features("", "0Exrs3zznekmCiCjhGZ3X9")
 cm1 <- get_playlist_audio_features("", "2tO0uLN5SxReQo533Ekoo4")
@@ -159,3 +159,25 @@ fig2 <- fig2 %>%
   )
 
 fig2
+
+awaken<-
+  get_tidy_audio_analysis("3jevgr3fYdv9wYO3IDJq2a") |>
+  select(segments) |>
+  unnest(segments) |>
+  select(start, duration, pitches)
+
+awaken |>
+  mutate(pitches = map(pitches, compmus_normalise, "euclidean")) |>
+  compmus_gather_chroma() |> 
+  ggplot(
+    aes(
+      x = start + duration / 2,
+      width = duration,
+      y = pitch_class,
+      fill = value
+    )
+  ) +
+  geom_tile() +
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
+  theme_minimal() +
+  scale_fill_viridis_c()
