@@ -48,6 +48,7 @@ library(flexdashboard)
 library(readr)
 library(lubridate)
 library(plotly)
+library(compmus)
 
 cm <- get_playlist_audio_features("", "0Exrs3zznekmCiCjhGZ3X9")
 cm1 <- get_playlist_audio_features("", "2tO0uLN5SxReQo533Ekoo4")
@@ -186,11 +187,95 @@ fig2 <- fig2 %>%
 fig2
 ```
 
-Different cool plots
+Chromagrams
 =====================================
 
-### plot 2
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Chromagrams
+
+placeholder text
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+### Awaken - Valerie Broussard
 
 ```{r}
+awaken<-
+  get_tidy_audio_analysis("3jevgr3fYdv9wYO3IDJq2a") |>
+  select(segments) |>
+  unnest(segments) |>
+  select(start, duration, pitches)
 
+awaken |>
+  mutate(pitches = map(pitches, compmus_normalise, "euclidean")) |>
+  compmus_gather_chroma() |> 
+  ggplot(
+    aes(
+      x = start + duration / 2,
+      width = duration,
+      y = pitch_class,
+      fill = value
+    )
+  ) +
+  geom_tile() +
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
+  theme_minimal() +
+  scale_fill_viridis_c()
+
+```
+
+### Pray - Kuoga, Ivy
+```{r}
+pray<-
+  get_tidy_audio_analysis("4FrZMNz4zpTMECW6EZ3vsx") |>
+  select(segments) |>
+  unnest(segments) |>
+  select(start, duration, pitches)
+
+pray |>
+  mutate(pitches = map(pitches, compmus_normalise, "euclidean")) |>
+  compmus_gather_chroma() |> 
+  ggplot(
+    aes(
+      x = start + duration / 2,
+      width = duration,
+      y = pitch_class,
+      fill = value
+    )
+  ) +
+  geom_tile() +
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
+  theme_minimal() +
+  scale_fill_viridis_c()
+```
+
+### Be quiet and drive (far away) - Deftones
+
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4Uiw0Sl9yskBaC6P4DcdVD?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+```{r}
+deft<-
+  get_tidy_audio_analysis("4Uiw0Sl9yskBaC6P4DcdVD") |>
+  select(segments) |>
+  unnest(segments) |>
+  select(start, duration, pitches)
+
+deft |>
+  mutate(pitches = map(pitches, compmus_normalise, "euclidean")) |>
+  compmus_gather_chroma() |> 
+  ggplot(
+    aes(
+      x = start + duration / 2,
+      width = duration,
+      y = pitch_class,
+      fill = value
+    )
+  ) +
+  geom_tile() +
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
+  theme_minimal() +
+  scale_fill_viridis_c()
 ```
