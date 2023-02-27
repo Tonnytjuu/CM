@@ -195,7 +195,7 @@ Column {data-width=500}
 
 ### Chromagrams
 
-placeholder text
+In the chromograms we could clearly see distinction between low tempo songs and high tempo songs, Be quiet and drive has a lot of different magnitudes per second, indicating a high BPM, unlike Pray and Awaken. 
 
 Column {.tabset}
 -----------------------------------------------------------------------
