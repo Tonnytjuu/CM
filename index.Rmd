@@ -15,7 +15,6 @@ Column {data-width=500}
 
 .overview {
    font-size: 15px;
-   font-family: Algerian;
 
 </style>
 
