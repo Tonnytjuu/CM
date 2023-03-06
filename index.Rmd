@@ -277,40 +277,163 @@ deft |>
   scale_fill_viridis_c()
 ```
 
-Dynamic Time Warping
+Cepstrograms
 =====================================
 
 Column {data-width=500}
 -----------------------------------------------------------------------
 
-### Dynamic Time Warping
+### Cepstrograms
 
-placeholder text
+The first cepstrogram, Awaken, we do not see a clear difference in the magnitudes. This is probablily due to the fact that the song is rather slow. The higher magnitudes are most likely because of the violin that is starting to play around that timeframe. This plot is made with "manhattan" normalisation and a root mean square function for readability purposes.
+
+The second plot is of a quintessential example of a metal song, high BPM, and a lot of electric guitar. As there are no big jumps in magnitudes for this plot I have chosen a "euclidean" and mean function. 
+
+Lastly, a house song, Quiet by Kuoga. This plot looks a bit like the first one, with clear jumps in magnitude when the house drop starts and finishes. With this plot, I used euclidean instead of manhattan as that resulted in a better plot.
 
 Column {.tabset}
 -----------------------------------------------------------------------
 
-### plot
+### Awaken
 
 ```{r}
-pray_dtw <-
-  get_tidy_audio_analysis("4FrZMNz4zpTMECW6EZ3vsx") |>
-  select(segments) |>
-  unnest(segments) |>
-  select(start, duration, pitches)
+awaken_timbre <-
+  get_tidy_audio_analysis("3jevgr3fYdv9wYO3IDJq2a") |> # Change URI.
+  compmus_align(bars, segments) |>                     # Change `bars`
+  select(bars) |>                                      #   in all three
+  unnest(bars) |>                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+          compmus_summarise, pitches,
+          method = "rms", norm = "manhattan"              # Change summary & norm.
+      )
+  ) |>
+  mutate(
+    timbre =
+      map(segments,
+          compmus_summarise, timbre,
+          method = "rms", norm = "manhattan"              # Change summary & norm.
+      )
+  )
 
-deft_dtw <-
-  get_tidy_audio_analysis("4Uiw0Sl9yskBaC6P4DcdVD") |>
-  select(segments) |>
-  unnest(segments) |>
-  select(start, duration, pitches)
+awaken_timbre |>
+  compmus_gather_timbre() |>
+  ggplot(
+    aes(
+      x = start + duration / 2,
+      width = duration,
+      y = basis,
+      fill = value
+    )
+  ) +
+  geom_tile() +
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
+  scale_fill_viridis_c() +                              
+  theme_classic()
+```
 
-compmus_long_distance(
-  pray_dtw |> mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
-  deft_dtw |> mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
-  feature = pitches,
-  method = "euclidean"
-) |>
+### Be quiet and drive (far away)
+
+```{r}
+deft_timbre <-
+  get_tidy_audio_analysis("4Uiw0Sl9yskBaC6P4DcdVD") |> # Change URI.
+  compmus_align(bars, segments) |>                     # Change `bars`
+  select(bars) |>                                      #   in all three
+  unnest(bars) |>                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+          compmus_summarise, pitches,
+          method = "mean", norm = "euclidean"              # Change summary & norm.
+      )
+  ) |>
+  mutate(
+    timbre =
+      map(segments,
+          compmus_summarise, timbre,
+          method = "mean", norm = "euclidean"              # Change summary & norm.
+      )
+  )
+
+deft_timbre |>
+  compmus_gather_timbre() |>
+  ggplot(
+    aes(
+      x = start + duration / 2,
+      width = duration,
+      y = basis,
+      fill = value
+    )
+  ) +
+  geom_tile() +
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
+  scale_fill_viridis_c() +                              
+  theme_classic()
+```
+
+### Quiet - Kuoga
+
+```{r}
+q_timbre <-
+  get_tidy_audio_analysis("5ouJ45sdbOh6QdzkVodn0Z") |> # Change URI.
+  compmus_align(bars, segments) |>                     # Change `bars`
+  select(bars) |>                                      #   in all three
+  unnest(bars) |>                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+          compmus_summarise, pitches,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  ) |>
+  mutate(
+    timbre =
+      map(segments,
+          compmus_summarise, timbre,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  )
+
+q_timbre |>
+  compmus_gather_timbre() |>
+  ggplot(
+    aes(
+      x = start + duration / 2,
+      width = duration,
+      y = basis,
+      fill = value
+    )
+  ) +
+  geom_tile() +
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
+  scale_fill_viridis_c() +                              
+  theme_classic()
+```
+
+Self-Similarity Matrices
+=====================================
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Self-Similarity Matrices
+
+Same songs again, as they're a good representation of the three main genres I have in my corpus. In "Awaken" we see a visible jump in magnitude at the end of the song. This can also be clearly heard, as all the instruments are played together. 
+
+In "Be quiet and drive (far away)" there are three major magnitudes in the chroma SSM. This is the "iconic" part of the electric guitar of the song. (sorry I am not very knowledgable on this field, guitars... ) You could try it out yourself at timestamps 100 sec and 150 sec.
+
+The major magnitude in "Quiet" is the part where the synthesizer starts playing at ~80 sec. Then it sort of falls of, where de second drop of the song begins.
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+### Awaken
+
+```{r}
+library("ggpubr")
+a <- awaken_timbre |>
+  compmus_self_similarity(timbre, "cosine") |> 
   ggplot(
     aes(
       x = xstart + xduration / 2,
@@ -321,8 +444,121 @@ compmus_long_distance(
     )
   ) +
   geom_tile() +
-  coord_equal() +
-  labs(x = "Pray", y = "Be quiet and drive (far away)") +
-  theme_minimal() +
-  scale_fill_viridis_c(guide = NULL)
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none") +
+  theme_classic() +
+  labs(x = "", y = "")
+
+b <- awaken_timbre |>
+  compmus_self_similarity(pitches, "cosine") |> 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none") +
+  theme_classic() +
+  labs(x = "", y = "")
+
+figure <- ggarrange(a, b,
+                    labels = c("SSM (timbre)", "SSM (chroma)"),
+                    ncol = 1, nrow = 2)
+
+figure
+```  
+
+### Be quiet and drive (far away)
+
+```{r}
+c <- deft_timbre |>
+  compmus_self_similarity(timbre, "cosine") |> 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none") +
+  theme_classic() +
+  labs(x = "", y = "")
+
+d <- deft_timbre |>
+  compmus_self_similarity(pitches, "cosine") |> 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none") +
+  theme_classic() +
+  labs(x = "", y = "")
+
+figure2 <- ggarrange(c, d,
+                    labels = c("SSM (timbre)", "SSM (chroma)"),
+                    ncol = 1, nrow = 2)
+
+figure2
 ```
+
+### Quiet 
+
+```{r}
+c <- q_timbre |>
+  compmus_self_similarity(timbre, "cosine") |> 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none") +
+  theme_classic() +
+  labs(x = "", y = "")
+
+d <- q_timbre |>
+  compmus_self_similarity(pitches, "cosine") |> 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none") +
+  theme_classic() +
+  labs(x = "", y = "")
+
+figure2 <- ggarrange(c, d,
+                    labels = c("SSM (timbre)", "SSM (chroma)"),
+                    ncol = 1, nrow = 2)
+
+figure2
+```
+
+

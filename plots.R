@@ -181,3 +181,5 @@ awaken |>
   labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
   theme_minimal() +
   scale_fill_viridis_c()
+
+
