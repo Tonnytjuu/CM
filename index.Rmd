@@ -207,7 +207,7 @@ In the chromograms we could clearly see distinction between low tempo songs and 
 Column {.tabset}
 -----------------------------------------------------------------------
 
-### Awaken - Valerie Broussard
+### Awaken - Valerie Broussard {data-padding=50}
 
 ```{=html}
 <iframe style="border-radius:20px"
