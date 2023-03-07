@@ -20,7 +20,10 @@ Column {data-width=500}
 
 ### Overview {.overview}
 
-<a href="https://open.spotify.com/playlist/6sCXB5zUhjzbpXnLYOMdi1?si=e8abc3f35f9844df">Link to my corpus (spotify)</a>
+```{=html}
+<iframe style="border-radius:20px"
+src="https://open.spotify.com/embed/playlist/0Exrs3zznekmCiCjhGZ3X9?utm_source=generator" width="100%" height="200" frameBorder="0" allowtransparency="true" allow="encrypted-media" data-external="1"></iframe>
+```
 
 My corpus of songs contains my personal music playlist I listen to when I go to the gym. This is a playlist of songs that will make me lift more, unlike some other music I have listened to. For some reason I cannot get enough of the songs when I am working out but I scarcely listen to these songs when I am for example at home sitting on the couch. What makes these songs so good in the gym compared to other songs?
 
@@ -33,7 +36,6 @@ Looking at the upperplot, we can see almost every song in my corpus has a high e
 <h2>Outliers</h2>
 
 The outliers, (low energy, low valence) are all from the artist Kuoga. This is trap/house music. Logically speaking, this is low valence. What makes up for the low energy (according to spotify) is the drop fitting for cardio and lifting. Other outliers are the songs of Gojira, heavy metal. These songs have almost the maximum value of energy and the tempo is around 150 BPM, pretty self explanatory. One funny outlier is Awaken, low tempo and low danceability. This song has in my opinion a good chorus to make up for it.
-
 
 Column {.tabset}
 -----------------------------------------------------------------------
@@ -194,12 +196,17 @@ Column {data-width=500}
 
 ### Chromagrams
 
-In the chromograms we could clearly see distinction between low tempo songs and high tempo songs, Be quiet and drive has a lot of different magnitudes per second, indicating a high BPM, unlike Pray and Awaken. 
+In the chromograms we could clearly see distinction between low tempo songs and high tempo songs, Be quiet and drive has a lot of different magnitudes per second, indicating a high BPM, unlike Pray and Awaken. Below are some previews of the songs:
 
 Column {.tabset}
 -----------------------------------------------------------------------
 
 ### Awaken - Valerie Broussard
+
+```{=html}
+<iframe style="border-radius:20px"
+src="https://open.spotify.com/embed/track/3jevgr3fYdv9wYO3IDJq2a" width="100%" height="100" frameBorder="0" allowtransparency="true" allow="encrypted-media" data-external="1"></iframe>
+```
 
 ```{r}
 awaken<-
@@ -227,6 +234,12 @@ awaken |>
 ```
 
 ### Pray - Kuoga, Ivy
+
+```{=html}
+<iframe style="border-radius:20px"
+src="https://open.spotify.com/embed/track/4FrZMNz4zpTMECW6EZ3vsx" width="100%" height="100" frameBorder="0" allowtransparency="true" allow="encrypted-media" data-external="1"></iframe>
+```
+
 ```{r}
 pray<-
   get_tidy_audio_analysis("4FrZMNz4zpTMECW6EZ3vsx") |>
@@ -255,7 +268,7 @@ pray |>
 
 ```{=html}
 <iframe style="border-radius:20px"
-src="https://open.spotify.com/embed/track/4Uiw0Sl9yskBaC6P4DcdVD" width="100%" height="152" frameBorder="0" allowtransparency="true" allow="encrypted-media" data-external="1"></iframe>
+src="https://open.spotify.com/embed/track/4Uiw0Sl9yskBaC6P4DcdVD" width="100%" height="100" frameBorder="0" allowtransparency="true" allow="encrypted-media" data-external="1"></iframe>
 ```
 
 ```{r}
@@ -301,6 +314,11 @@ Column {.tabset}
 
 ### Awaken
 
+```{=html}
+<iframe style="border-radius:20px"
+src="https://open.spotify.com/embed/track/3jevgr3fYdv9wYO3IDJq2a" width="100%" height="100" frameBorder="0" allowtransparency="true" allow="encrypted-media" data-external="1"></iframe>
+```
+
 ```{r}
 awaken_timbre <-
   get_tidy_audio_analysis("3jevgr3fYdv9wYO3IDJq2a") |> # Change URI.
@@ -340,6 +358,11 @@ awaken_timbre |>
 
 ### Be quiet and drive (far away)
 
+```{=html}
+<iframe style="border-radius:20px"
+src="https://open.spotify.com/embed/track/4Uiw0Sl9yskBaC6P4DcdVD" width="100%" height="100" frameBorder="0" allowtransparency="true" allow="encrypted-media" data-external="1"></iframe>
+```
+
 ```{r}
 deft_timbre <-
   get_tidy_audio_analysis("4Uiw0Sl9yskBaC6P4DcdVD") |> # Change URI.
@@ -378,6 +401,11 @@ deft_timbre |>
 ```
 
 ### Quiet - Kuoga
+
+```{=html}
+<iframe style="border-radius:20px"
+src="https://open.spotify.com/embed/track/5ouJ45sdbOh6QdzkVodn0Z" width="100%" height="100" frameBorder="0" allowtransparency="true" allow="encrypted-media" data-external="1"></iframe>
+```
 
 ```{r}
 q_timbre <-
