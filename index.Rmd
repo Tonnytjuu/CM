@@ -20,11 +20,6 @@ Column {data-width=500}
 
 ### Overview {.overview}
 
-```{=html}
-<iframe style="border-radius:12px"
-src="https://open.spotify.com/embed/track/4Uiw0Sl9yskBaC6P4DcdVD" width="100%" height="152" frameBorder="0" allowtransparency="true" allow="encrypted-media" data-external="1"></iframe>
-```
-
 <a href="https://open.spotify.com/playlist/6sCXB5zUhjzbpXnLYOMdi1?si=e8abc3f35f9844df">Link to my corpus (spotify)</a>
 
 My corpus of songs contains my personal music playlist I listen to when I go to the gym. This is a playlist of songs that will make me lift more, unlike some other music I have listened to. For some reason I cannot get enough of the songs when I am working out but I scarcely listen to these songs when I am for example at home sitting on the couch. What makes these songs so good in the gym compared to other songs?
@@ -257,6 +252,11 @@ pray |>
 ```
 
 ### Be quiet and drive (far away) - Deftones
+
+```{=html}
+<iframe style="border-radius:20px"
+src="https://open.spotify.com/embed/track/4Uiw0Sl9yskBaC6P4DcdVD" width="100%" height="152" frameBorder="0" allowtransparency="true" allow="encrypted-media" data-external="1"></iframe>
+```
 
 ```{r}
 deft<-
