@@ -1,6 +1,6 @@
 ---
 title: "The similarity of gym music"
-output: 
+output:
   flexdashboard::flex_dashboard:
     orientation: columns
 ---
@@ -19,6 +19,11 @@ Column {data-width=500}
 </style>
 
 ### Overview {.overview}
+
+```{=html}
+<iframe style="border-radius:12px"
+src="https://open.spotify.com/embed/track/4Uiw0Sl9yskBaC6P4DcdVD" width="100%" height="152" frameBorder="0" allowtransparency="true" allow="encrypted-media" data-external="1"></iframe>
+```
 
 <a href="https://open.spotify.com/playlist/6sCXB5zUhjzbpXnLYOMdi1?si=e8abc3f35f9844df">Link to my corpus (spotify)</a>
 
