@@ -638,8 +638,7 @@ p <- p %>% add_trace(data = cm3,
                      name="house/rest",
                      text= paste(cm3$key_mode),
                      type='histogram')
-
-p %>% layout(xaxis= list(showticklabels = FALSE))
+p
 ```
 </div>
 
