@@ -386,6 +386,39 @@ p <- p %>% add_trace(data = cm3,
                      text= paste(cm3$key_mode),
                      type='histogram')
 
-p %>% layout(xaxis= list(showticklabels = FALSE))
+#p %>% layout(xaxis= list(showticklabels = FALSE))
+p
 
-             
+cm_sorted <- cm[order(cm$tempo, decreasing=TRUE),] 
+fig <- plot_ly(
+  
+  type = 'table',
+  
+  header = list(
+    
+    values = c("Song","Key", "Tempo"),
+    
+    align = c("center", "center", "center"),
+    
+    line = list(width = 1, color = 'black'),
+    
+    fill = list(color = c("grey", "grey", "grey")),
+    
+    font = list(family = "Arial", size = 14, color = "white")
+    
+  ),
+  
+  cells = list(
+    
+    values = rbind(cm_sorted$track.name, cm_sorted$key_mode, cm_sorted$tempo),
+    
+    align = c("center", "center", "center"),
+    
+    line = list(color = "black", width = 1),
+    
+    font = list(family = "Arial", size = 12, color = c("black"))
+    
+  ))
+
+
+fig
