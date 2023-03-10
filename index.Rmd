@@ -656,27 +656,17 @@ fig
 
 <div class="myDiv">
 ```{r}
-p <- plot_ly(data = cm1, 
-             x = cm1$key_mode,
-             hoverinfo='text',
-             name='rap',
-             text= paste(cm1$key_mode),
-             type='histogram')
-
-p <- p %>% add_trace(data = cm2, 
-                x = cm2$key_mode,
-                hoverinfo='text',
-                name="metal",
-                text= paste(cm2$key_mode),
-                type='histogram')
-
-p <- p %>% add_trace(data = cm3, 
-                     x = cm3$key_mode,
-                     hoverinfo='text',
-                     name="house/rest",
-                     text= paste(cm3$key_mode),
-                     type='histogram')
-p
+hista <- ggplot(cm1, aes(key_mode)) + geom_histogram(stat="count", binwidth = 1) + 
+    theme(axis.title.x=element_blank()) + ggtitle("Distribution: Rap")
+  histb <- ggplot(cm2, aes(key_mode)) + geom_histogram(stat="count", binwidth = 1) + 
+    theme(axis.title.x=element_blank()) + ggtitle("Distribution: Metal")
+  histc <- ggplot(cm3, aes(key_mode)) + geom_histogram(stat="count", binwidth = 1) + 
+    theme(axis.title.x=element_blank()) + ggtitle("Distribution: House/Rest")
+  
+  
+  histf <- subplot(ggplotly(hista), ggplotly(histb), ggplotly(histc), nrows = 3) %>%
+    layout(title = list(text = "Distribution: Rap, Metal, House/Rest"))
+  histf   
 ```
 </div>
 

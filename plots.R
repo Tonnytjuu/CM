@@ -388,37 +388,22 @@ p <- p %>% add_trace(data = cm3,
 
 #p %>% layout(xaxis= list(showticklabels = FALSE))
 p
+library("ggpubr")
+hist <- plot_ly(data = cm1, 
+             x = cm1$key_mode,
+             hoverinfo='text',
+             name='rap',
+             text= paste(cm1$key_mode),
+             type='histogram')
 
-cm_sorted <- cm[order(cm$tempo, decreasing=TRUE),] 
-fig <- plot_ly(
+  hista <- ggplot(cm1, aes(key_mode)) + geom_histogram(stat="count", binwidth = 1) + 
+    theme(axis.title.x=element_blank()) + ggtitle("Distribution: Rap")
+  histb <- ggplot(cm2, aes(key_mode)) + geom_histogram(stat="count", binwidth = 1) + 
+    theme(axis.title.x=element_blank()) + ggtitle("Distribution: Metal")
+  histc <- ggplot(cm3, aes(key_mode)) + geom_histogram(stat="count", binwidth = 1) + 
+    theme(axis.title.x=element_blank()) + ggtitle("Distribution: House/Rest")
   
-  type = 'table',
   
-  header = list(
-    
-    values = c("Song","Key", "Tempo"),
-    
-    align = c("center", "center", "center"),
-    
-    line = list(width = 1, color = 'black'),
-    
-    fill = list(color = c("grey", "grey", "grey")),
-    
-    font = list(family = "Arial", size = 14, color = "white")
-    
-  ),
-  
-  cells = list(
-    
-    values = rbind(cm_sorted$track.name, cm_sorted$key_mode, cm_sorted$tempo),
-    
-    align = c("center", "center", "center"),
-    
-    line = list(color = "black", width = 1),
-    
-    font = list(family = "Arial", size = 12, color = c("black"))
-    
-  ))
-
-
-fig
+  histf <- subplot(ggplotly(hista), ggplotly(histb), ggplotly(histc), nrows = 3) %>%
+    layout(title = list(text = "Distribution: Rap, Metal, House/Rest"))
+  histf    
