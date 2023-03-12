@@ -609,7 +609,7 @@ Column {data-width=500}
 
 ### Chordograms
 
-text about chords
+Firstly a quick overview of the keys of the songs in my corpus (There is a bug where the song Friday Night Cypher jumps up and I have 0 clue on how to fix this). On the distribution we can see that metal has the widest variety of keys, with D and G being the most common one. Moving over to the chordograms, we can clearly see multiple dominant lines of keys. I have tried multiple songs and different norms and distances to see whether there is a better distiction or not and it did not help. So I personally think this is coming from the music of my choice, making it hard to see a clear dominant key in the plots. Beatbox 3, which is a rap song had one of the better plots of the rap genre, and the metal songs were all vague. I still have to find out the reason that causes this.
 
 Column {.tabset}
 -----------------------------------------------------------------------
