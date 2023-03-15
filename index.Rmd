@@ -373,9 +373,9 @@ src="https://open.spotify.com/embed/track/4Uiw0Sl9yskBaC6P4DcdVD" width="100%" h
 ```{r}
 deft_timbre <-
   get_tidy_audio_analysis("4Uiw0Sl9yskBaC6P4DcdVD") |> # Change URI.
-  compmus_align(bars, segments) |>                     # Change `bars`
-  select(bars) |>                                      #   in all three
-  unnest(bars) |>                                      #   of these lines.
+  compmus_align(sections, segments) |>                     # Change `bars`
+  select(sections) |>                                      #   in all three
+  unnest(sections) |>                                      #   of these lines.
   mutate(
     pitches =
       map(segments,
@@ -558,6 +558,117 @@ figure2
 ```
 
 ### Quiet 
+
+```{=html}
+<iframe style="border-radius:20px"
+src="https://open.spotify.com/embed/track/5ouJ45sdbOh6QdzkVodn0Z" width="100%" height="150" frameBorder="0" allowtransparency="true" allow="encrypted-media" data-external="1"></iframe>
+```
+<div class="myDiv">
+```{r}
+q_timbre <-
+  get_tidy_audio_analysis("5ouJ45sdbOh6QdzkVodn0Z") |> # Change URI.
+  compmus_align(bars, segments) |>                     # Change `bars`
+  select(bars) |>                                      #   in all three
+  unnest(bars) |>                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+          compmus_summarise, pitches,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  ) |>
+  mutate(
+    timbre =
+      map(segments,
+          compmus_summarise, timbre,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  )
+q_timbre |>
+  compmus_gather_timbre() |>
+  ggplot(
+    aes(
+      x = start + duration / 2,
+      width = duration,
+      y = basis,
+      fill = value
+    )
+  ) +
+  geom_tile() +
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
+  scale_fill_viridis_c() +                              
+  theme_classic()
+```
+</div>
+### You Gon' Learn -- Eminem
+
+```{=html}
+<iframe style="border-radius:20px"
+src="https://open.spotify.com/embed/track/5ouJ45sdbOh6QdzkVodn0Z" width="100%" height="150" frameBorder="0" allowtransparency="true" allow="encrypted-media" data-external="1"></iframe>
+```
+<div class="myDiv">
+```{r}
+y_timbre <-
+  get_tidy_audio_analysis("0GQ5bFTVFFKpwNPc7KwQnB") |> # Change URI.
+  compmus_align(bars, segments) |>                     # Change `bars`
+  select(bars) |>                                      #   in all three
+  unnest(bars) |>                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+          compmus_summarise, pitches,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  ) |>
+  mutate(
+    timbre =
+      map(segments,
+          compmus_summarise, timbre,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  )
+
+c <- y_timbre |>
+  compmus_self_similarity(timbre, "cosine") |> 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none") +
+  theme_classic() +
+  labs(x = "", y = "")
+
+d <- y_timbre |>
+  compmus_self_similarity(pitches, "cosine") |> 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none") +
+  theme_classic() +
+  labs(x = "", y = "")
+
+figure2 <- ggarrange(c, d,
+                    labels = c("SSM (timbre)", "SSM (chroma)"),
+                    ncol = 1, nrow = 2)
+
+figure2
+```
+</div>
 
 ```{r}
 c <- q_timbre |>
@@ -867,3 +978,84 @@ bb |>
 ```
 </div>
 
+Tempograms
+=====================================
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Tempograms
+
+text
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+### Distribution of tempo per genre
+
+<div class="myDiv">
+```{r}
+hista <- ggplot(cm1, aes(10* round(tempo/10, digits = 0))) + geom_histogram(stat="count", binwidth = 1) + 
+    theme(axis.title.x=element_blank()) + ggtitle("Distribution: Rap")
+histb <- ggplot(cm2, aes(10* round(tempo/10, digits = 0))) + geom_histogram(stat="count", binwidth = 1) + 
+    theme(axis.title.x=element_blank()) + ggtitle("Distribution: Metal")
+histc <- ggplot(cm3, aes(10* round(tempo/10, digits = 0))) + geom_histogram(stat="count", binwidth = 1) + 
+    theme(axis.title.x=element_blank()) + ggtitle("Distribution: House/Rest")
+  
+  
+histf <- subplot(ggplotly(hista), ggplotly(histb), ggplotly(histc), nrows = 3) %>%
+    layout(title = list(text = "Distribution: Rap, Metal, House/Rest"))
+histf   
+```
+</div>
+
+### Immortal
+
+<div class="myDiv">
+```{r}
+imm <- get_tidy_audio_analysis("4IO8X9W69dIQe0EC5ALXhq")
+imm |>
+  tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) |>
+  ggplot(aes(x = time, y = bpm, fill = power)) +
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none") +
+  labs(x = "Time (s)", y = "Tempo (BPM)") +
+  theme_classic()
+```
+</div>
+
+### Heretic Anthem - Slipknot
+```{=html}
+<iframe style="border-radius:20px"
+src="https://open.spotify.com/embed/track/3OYZWMm5m2DEwq2Tc1ukTh" width="100%" height="150" frameBorder="0" allowtransparency="true" allow="encrypted-media" data-external="1"></iframe>
+```
+<div class="myDiv">
+```{r}
+her <- get_tidy_audio_analysis("3OYZWMm5m2DEwq2Tc1ukTh")
+her |>
+  tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) |>
+  ggplot(aes(x = time, y = bpm, fill = power)) +
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none") +
+  labs(x = "Time (s)", y = "Tempo (BPM)") +
+  theme_classic()
+```
+</div>
+### You Gon' Learn - Eminem
+
+```{=html}
+<iframe style="border-radius:20px"
+src="https://open.spotify.com/embed/track/0GQ5bFTVFFKpwNPc7KwQnB" width="100%" height="150" frameBorder="0" allowtransparency="true" allow="encrypted-media" data-external="1"></iframe>
+```
+<div class="myDiv">
+```{r}
+you <- get_tidy_audio_analysis("0GQ5bFTVFFKpwNPc7KwQnB")
+you |>
+  tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) |>
+  ggplot(aes(x = time, y = bpm, fill = power)) +
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none") +
+  labs(x = "Time (s)", y = "Tempo (BPM)") +
+  theme_classic()
+```
+</div>
