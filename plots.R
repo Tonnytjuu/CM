@@ -406,4 +406,15 @@ hist <- plot_ly(data = cm1,
   
   histf <- subplot(ggplotly(hista), ggplotly(histb), ggplotly(histc), nrows = 3) %>%
     layout(title = list(text = "Distribution: Rap, Metal, House/Rest"))
-  histf    
+  histf 
+  
+imm <- get_tidy_audio_analysis("4IO8X9W69dIQe0EC5ALXhq")
+imm |>
+  tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) |>
+  ggplot(aes(x = time, y = bpm, fill = power)) +
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none") +
+  labs(x = "Time (s)", y = "Tempo (BPM)") +
+  theme_classic()
+imm
+

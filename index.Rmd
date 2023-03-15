@@ -986,7 +986,7 @@ Column {data-width=500}
 
 ### Tempograms
 
-text
+The first song is Immortal from 21 Savage. I personally thought this was a fun addition as the beat of a rapsong is continuous. A bit of a boring example in terms of the plot but it is an outlier in a certain sense. The second song of Slipknot, we can see a clear jump in around 110s. The first part is wrong catagorized by the algorithm, an tempo octave too high. At 110s the musics takes a small pause and a crazy drumsolo starts to kick in. The last 'cliff' in tempo is in around 220s, where the song ends and the interlude starts. The last song, you gon' learn is also a rap song, with a clear jump in around 150s. Here starts Em's verse, where a small beat change happens. This verse is until 160s.
 
 Column {.tabset}
 -----------------------------------------------------------------------
